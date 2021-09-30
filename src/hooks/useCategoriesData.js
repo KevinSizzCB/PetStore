@@ -8,7 +8,7 @@ export const useCategoriesData = () => {
   useEffect(function () {
     setLoading(true)
 
-    window.fetch('https://petgram-api.midudev.now.sh/categories')
+    window.fetch('https://petgram-server-kevinsiz.vercel.app/categories')
       .then(res => res.json())
       .then(categories => {
         setCategoriesData(categories)

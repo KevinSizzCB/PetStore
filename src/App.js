@@ -1,29 +1,46 @@
-import React from 'react'
-import { Router } from '@reach/router'
+import React from "react";
+import { Router } from "@reach/router";
 
-import { GlobalStyles } from './styles/GlobalStyles'
+import Context from "./Context";
 
-import { Home } from './pages/Home'
+import { GlobalStyles } from "./styles/GlobalStyles";
 
-import { Logo } from './components/Logo'
-import { PhotoCardWithQuery } from './containers/PhotoCardWithQuery'
+import { Home } from "./pages/Home";
+
+import { Logo } from "./components/Logo";
+import { Detail } from "./pages/Detail";
+import { NavBar } from "./components/NavBar";
+import { Favs } from "./pages/Favs";
+import { User } from "./pages/Users";
+import { NotRegisteredUser } from "./pages/NotRegisteredUser";
+
 
 export default function () {
-  const urlParams = new window.URLSearchParams(window.location.search)
-  const detailId = urlParams.get('detail')
-
   return (
     <div>
       <Logo />
       <GlobalStyles />
-      {
-        detailId
-          ? <PhotoCardWithQuery id={detailId} />
-          : <Router>
-            <Home path='/' />
-            <Home path='/pet/:id' />
-          </Router>
-      }
+      <Router>
+        <Home path="/" />
+        <Home path="/pet/:id" />
+        <Detail path="/detail/:detailId" />
+      </Router>
+      <Context.Consumer>
+        {({ isAuth }) =>
+          isAuth ? (
+            <Router>
+              <Favs path="/favs" />
+              <User path="/user" />
+            </Router>
+          ) : (
+            <Router>
+              <NotRegisteredUser path="/favs" />
+              <NotRegisteredUser path="/user" />
+            </Router>
+          )
+        }
+      </Context.Consumer>
+      <NavBar />
     </div>
-  )
+  );
 }
